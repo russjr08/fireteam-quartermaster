@@ -1,0 +1,8 @@
+# Build / output directories
+build/
+node_modules/
+env/
+
+# Secrets!
+.env
+firebase-auth.json
