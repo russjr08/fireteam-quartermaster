@@ -29,16 +29,28 @@ export class Bot {
         })
     }
 
+    private updateStatus() {
+        this.client.user?.setPresence({
+            status: "online",
+            activity: {
+                name: "And Guiding Guardians Together!",
+                type: "WATCHING"
+            }
+        }).then(() => {
+            console.log("Sent status update to Discord")
+        })
+    }
+
     public initialize() {
         this.client.on('ready', () => {
             console.log(`Bot is up and running as ${this.client?.user?.tag}`)
-            this.client.user?.setPresence({
-                status: "online",
-                activity: {
-                    name: "And Guiding Guardians Together!",
-                    type: "WATCHING"
-                }
-            })
+            
+            this.updateStatus() // Initial status update
+
+            // Updates status to Discord after every fifteen minutes (as it gets cleared eventually on its own)
+            setInterval(() => {
+                this.updateStatus()
+            }, 900000)
         })
     
         this.client.on('guildCreate', (server: Discord.Guild) => {
