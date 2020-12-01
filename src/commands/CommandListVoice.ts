@@ -32,12 +32,12 @@ export default class CommandListVoice implements ICommand {
                 if(snapshot.exists) {
                     var data = snapshot.data()
                     if(data !== undefined) {
-                        embed.addField(GuildMember.nickname, data.steam_id, true)
+                        embed.addField(GuildMember.displayName, data.steam_id, true)
                     } else {
-                        embed.addField(GuildMember.nickname, "<Invalid Data>", true)
+                        embed.addField(GuildMember.displayName, "<Invalid Data>", true)
                     }
                 } else {
-                    embed.addField(GuildMember.nickname, "<Not Registered>", true)
+                    embed.addField(GuildMember.displayName, "<Not Registered>", true)
 
                 }
             }
