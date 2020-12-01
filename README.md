@@ -2,6 +2,8 @@
 You will need to create a .env file with the following:
 ``` BOT_LOGIN_TOKEN=Token goes here ```
 
+This bot also utilizes Firebase to store data, you will need to create your own Firebase project, and download the credentials for the project to your workspace (it should be presented to you as `firebase-auth.json`).
+
 # Requirements
 You will need Node v12.12.0 or higher
 

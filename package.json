@@ -1,9 +1,9 @@
 {
-  "name": "discord-steam-codes",
-  "version": "1.0.0",
-  "description": "This is a Discord bot that is designed to track Discord users' Steam profile codes",
+  "name": "fireteam-quartermaster",
+  "version": "1.0.1",
+  "description": "This is a Discord bot that is designed to assist Guardians link up with each other!",
   "main": "build/bot.js",
-  "repository": "https://github.com/russjr08/discord-steam-codes",
+  "repository": "https://github.com/russjr08/fireteam-quartermaster",
   "scripts": {
     "start:dev": ". env/bin/activate && nodemon",
     "build": "rimraf ./build && tsc",
