@@ -34,7 +34,7 @@ export default class CommandLookup implements ICommand {
                 var snapshot = await collection.doc(targetID).get()
 
                 const embed = new Discord.MessageEmbed()
-                    .setColor("#00c0ff")
+                    .setColor(this.bot.DEFAULT_EMBED_COLOR)
                     .setTitle("Registration")
                     .setAuthor(targetUser.user.tag)
         
@@ -64,6 +64,10 @@ export default class CommandLookup implements ICommand {
     }
     name(): string {
         return "lookup"
+    }
+
+    getHelpText(): string {
+        return `<${this.bot.COMMAND_PREFIX}lookup @Username> Attempts to lookup a user's Steam ID, and returns it if found.`
     }
 
 }

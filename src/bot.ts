@@ -7,16 +7,18 @@ import CommandPing  from './commands/CommandPing'
 import CommandRegister from './commands/CommandRegister';
 import CommandLookup from './commands/CommandLookup';
 import CommandListVoice from './commands/CommandListVoice';
+import CommandHelp from './commands/CommandHelp';
 
 export class Bot {
 
     private client = new Discord.Client()
 
     private commands = new Array<ICommand>()
+    
+    private db: Firestore.Firestore
 
     public COMMAND_PREFIX = "&"
-
-    private db: Firestore.Firestore
+    public DEFAULT_EMBED_COLOR = "#00c0ff"
 
     constructor() {
         // Import variables
@@ -76,6 +78,7 @@ export class Bot {
         this.commands.push(new CommandRegister(this))
         this.commands.push(new CommandLookup(this))
         this.commands.push(new CommandListVoice(this))
+        this.commands.push(new CommandHelp(this))
     
         this.client.login(process.env['BOT_LOGIN_TOKEN'])
     }
@@ -83,6 +86,10 @@ export class Bot {
 
     public getDatabase(): Firestore.Firestore {
         return this.db
+    }
+
+    public getCommands(): Array<ICommand> {
+        return this.commands
     }
 
     public reactPositiveToMessage(message: Discord.Message) {

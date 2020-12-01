@@ -18,4 +18,8 @@ export default class CommandPing implements ICommand {
         return "ping"
     }
 
+    getHelpText(): string {
+        return `Test command... Nothing to see here!`
+    }
+
 }

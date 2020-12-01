@@ -56,6 +56,10 @@ export default class CommandRegister implements ICommand {
         return "register"
     }
 
+    getHelpText(): string {
+        return `<${this.bot.COMMAND_PREFIX}register STEAM_ID_HERE> Registers your Steam ID with my database, note that STEAM_ID_HERE should be your 17 digit Steam ID.`
+    }
+
     
     // https://stackoverflow.com/a/50376498/1391553
     private isNumber(value: string | number): boolean {

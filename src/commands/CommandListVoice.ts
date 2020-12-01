@@ -21,7 +21,7 @@ export default class CommandListVoice implements ICommand {
             return
         } else {
             const embed = new Discord.MessageEmbed()
-                .setColor("#00c0ff")
+                .setColor(this.bot.DEFAULT_EMBED_COLOR)
                 .setTitle("Join Codes For Your Party")
                 .setAuthor(authorActiveVoiceChannel.name)
                 .setDescription("The following folks are in your party!")
@@ -32,12 +32,12 @@ export default class CommandListVoice implements ICommand {
                 if(snapshot.exists) {
                     var data = snapshot.data()
                     if(data !== undefined) {
-                        embed.addField(GuildMember.user.tag, data.steam_id, true)
+                        embed.addField(GuildMember.nickname, data.steam_id, true)
                     } else {
-                        embed.addField(GuildMember.user.tag, "<Invalid Data>", true)
+                        embed.addField(GuildMember.nickname, "<Invalid Data>", true)
                     }
                 } else {
-                    embed.addField(GuildMember.user.tag, "<Not Registered>", true)
+                    embed.addField(GuildMember.nickname, "<Not Registered>", true)
 
                 }
             }
@@ -52,6 +52,10 @@ export default class CommandListVoice implements ICommand {
 
     public name(): string {
         return "list_voice"
+    }
+
+    getHelpText(): string {
+        return `<${this.bot.COMMAND_PREFIX}list_voice> Creates a read-out of the join codes for all the members in your voice channel.`
     }
     
 }
