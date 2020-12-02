@@ -72,6 +72,11 @@ export class Bot {
                     })
                 }
             }
+            if(message.mentions.members?.has(this.client.user!.id)) {
+                if(message.content.toLowerCase().includes("ily")) {
+                    message.react("❤")
+                }
+            }
         })
     
         this.commands.push(new CommandPing(this))

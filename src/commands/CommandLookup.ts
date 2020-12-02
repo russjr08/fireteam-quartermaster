@@ -11,55 +11,42 @@ export default class CommandLookup implements ICommand {
     }
 
     public async run(message: Message, args: string[]) {
-        if(!args[0].startsWith("<")) {
-            message.reply("That doesn't look like a valid Discord name from this server to me.")
+
+        if(message.mentions.users.size <= 0) {
+            message.reply("You need to mention at least one Discord user!")
+            this.bot.reactNegativeToMessage(message)
+            return
+        }
+
+        if(message.mentions.users.size > 10) {
+            message.reply("You can only lookup a maximum of 10 Guardians at a time!")
             this.bot.reactNegativeToMessage(message)
             return
         }
 
         this.bot.reactWaitingToMessage(message)
 
-        // Strips the argument to only have the Discord ID in it, and stores it under targetID
-        var targetID = args[0].replace("\<", "")
-        targetID = targetID.replace("\>", "")
-        targetID = targetID.replace("\!", "")
-        targetID = targetID.replace("@", "")
-
-        var usersInGuild = await message.guild?.members.fetch()
-
-        if(usersInGuild !== undefined) {
-            var targetUser = usersInGuild.find(user => user.id === targetID)
-            if(targetUser !== undefined) {
-                var collection = this.bot.getDatabase().collection("players")
-                var snapshot = await collection.doc(targetID).get()
-
-                const embed = new Discord.MessageEmbed()
+        const embed = new Discord.MessageEmbed()
                     .setColor(this.bot.DEFAULT_EMBED_COLOR)
-                    .setTitle("Registration")
-                    .setAuthor(targetUser.user.tag)
-        
-                if(snapshot.exists) {
-                    var data = snapshot.data()
-                    if(data !== undefined) {
-                        embed.addField("Steam ID", data.steam_id, true)
-                    } else {
-                        embed.addField("Steam ID", "Data Not Found :(", true)
-                        await message.reactions.removeAll()
-                        this.bot.reactNegativeToMessage(message)
-                        message.channel.send(embed)
-                        return
-                    }
-                    await message.reactions.removeAll()
-                    this.bot.reactPositiveToMessage(message)
-                } else {
-                    embed.setDescription(`Registration not found for ${targetUser.user.tag}`)
-                    await message.reactions.removeAll()
-                    this.bot.reactNegativeToMessage(message)
-                }
+                    .setTitle("Registration Results")
+                    .setDescription("Here are the Steam IDs for the Guardians you mentioned!")
 
-                message.channel.send(embed)
+        var collection = this.bot.getDatabase().collection("players")
+        for(let [id, user] of message.mentions.users) {
+            var snapshot = await collection.doc(id).get()
+            if(snapshot.exists) {
+                var data = snapshot.data()
+                if(data !== undefined) {
+                    embed.addField(user.username, data.steam_id, false)
+                } else {
+                    embed.addField(user.username, "<Not Registered>", false)
+                }
+            } else {
+                embed.addField(user.username, "<Not Registered>", false)
             }
         }
+
+        message.channel.send(embed).then(() => message.reactions.removeAll()).then(() => this.bot.reactPositiveToMessage(message))
         
     }
     name(): string {
@@ -67,7 +54,7 @@ export default class CommandLookup implements ICommand {
     }
 
     getHelpText(): string {
-        return `<${this.bot.COMMAND_PREFIX}lookup @Username> Attempts to lookup a user's Steam ID, and returns it if found.`
+        return `<${this.bot.COMMAND_PREFIX}lookup @Username> Attempts to lookup a Guardian's Steam ID, and returns it if found. _Hint, you can lookup multiple Guardians at once!_`
     }
 
 }
