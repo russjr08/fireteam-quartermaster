@@ -1,7 +1,9 @@
 import { Message } from 'discord.js';
 import { ICommand } from '../interfaces';
+import { PermissionLevel } from '../types';
 import { Bot } from '../bot';
 import * as Discord from 'discord.js';
+import { Utilities } from '../Utilities';
 
 
 export default class CommandHelp implements ICommand {
@@ -19,7 +21,11 @@ export default class CommandHelp implements ICommand {
                             .setDescription("See the following list for commands that you can run, and what they do!")
 
         for(let command of this.bot.getCommands()) {
-            embed.addField(command.name(), command.getHelpText(), false)
+            if(!command.isCommandHidden()) {
+                if(Utilities.getUserPermissionLevel(message.member!, this.bot.getDatabase()) >= command.getRequiredPermissionLevel()) {
+                    embed.addField(command.name(), command.getHelpText(), false)
+                }
+            }
         }
 
         message.channel.send(embed).then(() => this.bot.reactPositiveToMessage(message))
@@ -32,6 +38,14 @@ export default class CommandHelp implements ICommand {
 
     getHelpText(): string {
         return `<${this.bot.COMMAND_PREFIX}help> Lists all available commands, and their help text.`
+    }
+
+    getRequiredPermissionLevel(): PermissionLevel {
+        return PermissionLevel.EVERYONE
+    }
+
+    isCommandHidden(): boolean {
+        return false
     }
 
 }

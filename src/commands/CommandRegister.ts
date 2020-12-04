@@ -1,4 +1,5 @@
 import { ICommand } from '../interfaces';
+import { PermissionLevel } from '../types';
 import { Message } from 'discord.js';
 import * as Discord from 'discord.js';
 import { Bot } from '../bot';
@@ -68,6 +69,13 @@ export default class CommandRegister implements ICommand {
                 !isNaN(Number(value.toString())));
     }
 
+    getRequiredPermissionLevel(): PermissionLevel {
+        return PermissionLevel.EVERYONE
+    }
+
+    isCommandHidden(): boolean {
+        return false
+    }
 
 
 }

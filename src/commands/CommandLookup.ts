@@ -1,4 +1,5 @@
 import { ICommand } from '../interfaces';
+import { PermissionLevel } from '../types';
 import { Message } from 'discord.js';
 import * as Discord from 'discord.js'
 import { Bot } from '../bot';
@@ -55,6 +56,14 @@ export default class CommandLookup implements ICommand {
 
     getHelpText(): string {
         return `<${this.bot.COMMAND_PREFIX}lookup @Username> Attempts to lookup a Guardian's Steam ID, and returns it if found. _Hint, you can lookup multiple Guardians at once!_`
+    }
+
+    getRequiredPermissionLevel(): PermissionLevel {
+        return PermissionLevel.EVERYONE
+    }
+
+    isCommandHidden(): boolean {
+        return false
     }
 
 }

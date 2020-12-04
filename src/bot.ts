@@ -8,6 +8,7 @@ import CommandRegister from './commands/CommandRegister';
 import CommandLookup from './commands/CommandLookup';
 import CommandListVoice from './commands/CommandListVoice';
 import CommandHelp from './commands/CommandHelp';
+import { Utilities } from './Utilities';
 
 export class Bot {
 
@@ -66,8 +67,13 @@ export class Bot {
                     var commandName = slicedInput[1].split(" ")[0]
                     this.commands.forEach((command: ICommand) => {
                         if(command.name() === commandName) {
-                            var args = slicedInput[1].split(" ").slice(1)
-                            command.run(message, args)
+                            if(Utilities.getUserPermissionLevel(message.member!, this.db) >= command.getRequiredPermissionLevel()) {
+                                var args = slicedInput[1].split(" ").slice(1)
+                                command.run(message, args)
+                            } else {
+                                message.reply("Error: You are not authorized to run this command! (**Access Denied**)")
+                                this.reactNegativeToMessage(message)
+                            }
                         }
                     })
                 }

@@ -1,4 +1,5 @@
 import { ICommand } from '../interfaces';
+import { PermissionLevel } from '../types';
 import { Message } from 'discord.js';
 import * as Discord from 'discord.js'
 import { Bot } from '../bot';
@@ -56,6 +57,14 @@ export default class CommandListVoice implements ICommand {
 
     getHelpText(): string {
         return `<${this.bot.COMMAND_PREFIX}list_voice> Creates a read-out of the join codes for all the members in your voice channel.`
+    }
+
+    getRequiredPermissionLevel(): PermissionLevel {
+        return PermissionLevel.EVERYONE
+    }
+
+    isCommandHidden(): boolean {
+        return false
     }
     
 }
