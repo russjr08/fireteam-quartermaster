@@ -7,6 +7,7 @@ import CommandPing  from './commands/CommandPing'
 import CommandRegister from './commands/CommandRegister';
 import CommandLookup from './commands/CommandLookup';
 import CommandListVoice from './commands/CommandListVoice';
+import CommandMoveVoice from './commands/CommandMoveVoice';
 import CommandHelp from './commands/CommandHelp';
 import { Utilities } from './Utilities';
 
@@ -89,6 +90,7 @@ export class Bot {
         this.commands.push(new CommandRegister(this))
         this.commands.push(new CommandLookup(this))
         this.commands.push(new CommandListVoice(this))
+        this.commands.push(new CommandMoveVoice(this))
         this.commands.push(new CommandHelp(this))
     
         this.client.login(process.env['BOT_LOGIN_TOKEN'])
@@ -104,15 +106,15 @@ export class Bot {
     }
 
     public reactPositiveToMessage(message: Discord.Message) {
-        message.react("✅")
+        message.reactions.removeAll().then(() => message.react("✅"))
     }
 
     public reactNegativeToMessage(message: Discord.Message) {
-        message.react("❌")
+        message.reactions.removeAll().then(() => message.react("❌"))
     }
 
     public reactWaitingToMessage(message: Discord.Message) {
-        message.react("🤔")
+        message.reactions.removeAll().then(() => message.react("🤔"))
     }
 
 }
