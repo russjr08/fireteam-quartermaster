@@ -1,6 +1,6 @@
 {
   "name": "fireteam-quartermaster",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "This is a Discord bot that is designed to assist Guardians link up with each other!",
   "main": "build/bot.js",
   "repository": "https://github.com/russjr08/fireteam-quartermaster",

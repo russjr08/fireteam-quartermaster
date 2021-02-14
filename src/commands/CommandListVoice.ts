@@ -44,6 +44,8 @@ export default class CommandListVoice implements ICommand {
             }
             embed.addField('\u200b', '\u200b')
             embed.addField('Want to register?', `Type ${this.bot.COMMAND_PREFIX}register YourSteamIDHere`)
+            embed.addField('Never used a Steam ID in Destiny?',
+             'Open your in-game chat by pressing <Enter> and then type "/join SteamIDHere" (without quotes) then press <Enter> again, and the game will connect you to the Fireteam automatically!')
             message.channel.send(embed)
             await message.reactions.removeAll()
             this.bot.reactPositiveToMessage(message)

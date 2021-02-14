@@ -23,7 +23,9 @@ export default class CommandMoveVoice implements ICommand {
 
             if(voiceFrom && voiceDestination) {
                 for(let [id, user] of voiceFrom?.members) {
-                    user.voice.setChannel(voiceDestination)
+                    if(user.voice.channel) {
+                        user.voice.setChannel(voiceDestination)
+                    }
                 }
                 this.bot.reactPositiveToMessage(message)
             } else {
