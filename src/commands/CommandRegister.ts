@@ -12,21 +12,29 @@ export default class CommandRegister implements ICommand {
     }
 
     public async run(message: Message, args: string[]) {
+
+        var name = "";
+
+        for(var i = 0; i < args.length; i++) {
+            if(i != args.length) {
+                name += `${args[i]} `;
+            } else {
+                name += args[i];
+            }
+        }
         
         if(args.length == 0) {
-            message.reply("You need to give me your Steam ID!")
+            message.reply("You need to give me your Bungie Name!")
             this.bot.reactNegativeToMessage(message)
             return
-        } else if (!this.isNumber(args[0])) {
-            message.reply("Hey, that's not a Steam ID! Try that again.")
+        } else if (!this.isValidBungieName(name)) {
+            message.reply("Hey, that's not a valid Bungie Name! Try that again, it should look something like 'Your Name#1234'")
             this.bot.reactNegativeToMessage(message)
             return
-        } else {
-            this.bot.reactPositiveToMessage(message)
         }
 
         var userData = {
-            steam_id: args[0]
+            bungie_name: name
         }
         var collection = this.bot.getDatabase().collection("players")
         var snapshot = await collection.doc(message.author.id).get()
@@ -36,7 +44,7 @@ export default class CommandRegister implements ICommand {
             .setTitle("Registration")
             .setAuthor(message.author.tag)
             .setDescription("Registration Details")
-            .addField(`Steam ID for ${message.member?.user.tag}`, userData.steam_id, true)
+            .addField(`Bungie Name for ${message.member?.user.tag}`, userData.bungie_name, true)
 
         if(snapshot.exists) {
             // User already registered -- update registration
@@ -58,15 +66,35 @@ export default class CommandRegister implements ICommand {
     }
 
     getHelpText(): string {
-        return `<${this.bot.COMMAND_PREFIX}register STEAM_ID_HERE> Registers your Steam ID with my database, note that STEAM_ID_HERE should be your 17 digit Steam ID.`
+        return `<${this.bot.COMMAND_PREFIX}register Bungie_Name#1234> Registers your Bungie Name with my database, note that Bungie_Name#000 should be your Bungie Name, with the discriminator at the end (the #1234 part).`
     }
 
+    private isValidBungieName(name: string): boolean {
+        var valid = false;
+        var hashIndex = name.indexOf("#");
+
+        if(hashIndex != -1) {
+            var discrim = name.substring(hashIndex + 1);
+            if(this.isNumber(discrim)) {
+                if(this.numOfDigits(discrim) === 4) {
+                    valid = true;
+                }
+            }
+        }
+
+        return valid
+    }
     
     // https://stackoverflow.com/a/50376498/1391553
     private isNumber(value: string | number): boolean {
         return ((value != null) &&
                 (value !== '') &&
                 !isNaN(Number(value.toString())));
+    }
+
+    private numOfDigits(input: string) {
+        var x = parseInt(input);
+        return (Math.log10((x ^ (x >> 31)) - (x >> 31)) | 0) + 1;
     }
 
     getRequiredPermissionLevel(): PermissionLevel {

@@ -30,21 +30,32 @@ export default class CommandLookup implements ICommand {
         const embed = new Discord.MessageEmbed()
                     .setColor(this.bot.DEFAULT_EMBED_COLOR)
                     .setTitle("Registration Results")
-                    .setDescription("Here are the Steam IDs for the Guardians you mentioned!")
+                    .setDescription("Here are the Bungie Names for the Guardians you mentioned!")
 
         var collection = this.bot.getDatabase().collection("players")
+        var hasLegacySteam = false;
+
         for(let [id, user] of message.mentions.users) {
             var snapshot = await collection.doc(id).get()
             if(snapshot.exists) {
                 var data = snapshot.data()
                 if(data !== undefined) {
-                    embed.addField(user.username, data.steam_id, false)
+                    if(data.steam_id !== undefined) {
+                        embed.addField(user.username, "<Legacy Data>", false)
+                        hasLegacySteam = true;
+                    } else {
+                        embed.addField(user.username, data.bungie_name, false)
+                    }
                 } else {
                     embed.addField(user.username, "<Not Registered>", false)
                 }
             } else {
                 embed.addField(user.username, "<Not Registered>", false)
             }
+        }
+
+        if(hasLegacySteam) {
+            embed.setFooter("Note, some Guardians you requested still have a Steam ID attached instead of a Bungie Name, you'll see <Legacy Data> for these cases!");
         }
 
         message.channel.send(embed).then(() => message.reactions.removeAll()).then(() => this.bot.reactPositiveToMessage(message))
@@ -55,7 +66,7 @@ export default class CommandLookup implements ICommand {
     }
 
     getHelpText(): string {
-        return `<${this.bot.COMMAND_PREFIX}lookup @Username> Attempts to lookup a Guardian's Steam ID, and returns it if found. _Hint, you can lookup multiple Guardians at once!_`
+        return `<${this.bot.COMMAND_PREFIX}lookup @Username> Attempts to lookup a Guardian's Bungie Name, and returns it if found. _Hint, you can lookup multiple Guardians at once!_`
     }
 
     getRequiredPermissionLevel(): PermissionLevel {
