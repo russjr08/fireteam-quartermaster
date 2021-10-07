@@ -10,6 +10,8 @@ import CommandListVoice from './commands/CommandListVoice';
 import CommandMoveVoice from './commands/CommandMoveVoice';
 import CommandHelp from './commands/CommandHelp';
 import { Utilities } from './Utilities';
+import CommandSetRoleType from './commands/CommandSetRoleType';
+import CommandRoleTypeCheck from './commands/CommandRoleTypeCheck';
 
 export class Bot {
 
@@ -91,6 +93,8 @@ export class Bot {
         this.commands.push(new CommandLookup(this))
         this.commands.push(new CommandListVoice(this))
         this.commands.push(new CommandMoveVoice(this))
+        this.commands.push(new CommandSetRoleType(this))
+        this.commands.push(new CommandRoleTypeCheck(this))
         this.commands.push(new CommandHelp(this))
     
         this.client.login(process.env['BOT_LOGIN_TOKEN'])
