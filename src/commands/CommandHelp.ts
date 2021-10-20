@@ -15,6 +15,8 @@ export default class CommandHelp implements ICommand {
 
     async run(message: Message, args: string[]): Promise<void> {
 
+        message.channel.startTyping()
+
         const embed = new Discord.MessageEmbed()
                             .setTitle("My List of Commands")
                             .setColor(this.bot.DEFAULT_EMBED_COLOR)
@@ -28,7 +30,7 @@ export default class CommandHelp implements ICommand {
             }
         }
 
-        message.channel.send(embed).then(() => this.bot.reactPositiveToMessage(message))
+        message.channel.send(embed).then(() => this.bot.reactPositiveToMessage(message)).then(() => message.channel.stopTyping())
 
     }
 

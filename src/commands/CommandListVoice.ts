@@ -21,6 +21,8 @@ export default class CommandListVoice implements ICommand {
             this.bot.reactNegativeToMessage(message)
             return
         } else {
+            message.channel.startTyping()
+
             const embed = new Discord.MessageEmbed()
                 .setColor(this.bot.DEFAULT_EMBED_COLOR)
                 .setTitle("Bungie Names For Your Party")
@@ -59,7 +61,7 @@ export default class CommandListVoice implements ICommand {
             embed.addField('Want to register?', `Type ${this.bot.COMMAND_PREFIX}register Your_Bungie_Name#1234`)
             embed.addField('Never used a Bungie Name in Destiny?',
              'Open your in-game chat by pressing <Enter> and then type "/join Bungie_Name#1234" (without quotes) then press <Enter> again, and the game will connect you to the Fireteam automatically!')
-            message.channel.send(embed)
+            message.channel.send(embed).then(() => message.channel.stopTyping())
             await message.reactions.removeAll()
             this.bot.reactPositiveToMessage(message)
         }

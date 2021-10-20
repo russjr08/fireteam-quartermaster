@@ -19,12 +19,7 @@ export default class CommandSetRoleType implements ICommand {
             return
         }
 
-        // if(Number.isNaN(parseInt(args[0]))) {
-        //     this.bot.reactNegativeToMessage(message)
-        //     message.reply("The Role Type specified must be a number!")
-        //     return
-        // }
-
+        message.channel.startTyping()
 
         var roleType: RoleType = RoleType[args[0] as unknown as keyof typeof RoleType]
 
@@ -55,6 +50,8 @@ export default class CommandSetRoleType implements ICommand {
             this.bot.reactNegativeToMessage(message)
             message.reply(error)
         }
+
+        message.channel.stopTyping()
 
     }
 

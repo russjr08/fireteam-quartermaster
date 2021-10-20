@@ -33,6 +33,8 @@ export default class CommandRegister implements ICommand {
             return
         }
 
+        message.channel.startTyping()
+
         var userData = {
             bungie_name: name
         }
@@ -58,6 +60,7 @@ export default class CommandRegister implements ICommand {
         }
 
         this.bot.reactPositiveToMessage(message)
+        message.channel.stopTyping()
         
     }
 

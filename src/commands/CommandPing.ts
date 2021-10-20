@@ -11,7 +11,9 @@ export default class CommandPing implements ICommand {
     }
 
     public async run(message: Message, args: string[]) {
+        message.channel.startTyping()
         message.reply("Pong!")
+        message.channel.stopTyping()
     }
 
     public name(): string {

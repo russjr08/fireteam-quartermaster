@@ -26,6 +26,7 @@ export default class CommandLookup implements ICommand {
         }
 
         this.bot.reactWaitingToMessage(message)
+        message.channel.startTyping()
 
         const embed = new Discord.MessageEmbed()
                     .setColor(this.bot.DEFAULT_EMBED_COLOR)
@@ -58,7 +59,7 @@ export default class CommandLookup implements ICommand {
             embed.setFooter("Note, some Guardians you requested still have a Steam ID attached instead of a Bungie Name, you'll see <Legacy Data> for these cases!");
         }
 
-        message.channel.send(embed).then(() => message.reactions.removeAll()).then(() => this.bot.reactPositiveToMessage(message))
+        message.channel.send(embed).then(() => message.reactions.removeAll()).then(() => this.bot.reactPositiveToMessage(message)).then(() => message.channel.stopTyping())
         
     }
     name(): string {

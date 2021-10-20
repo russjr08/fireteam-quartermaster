@@ -16,6 +16,7 @@ export default class CommandMoveVoice implements ICommand {
             this.bot.reactNegativeToMessage(message)
             return
         }
+        message.channel.startTyping()
 
         if(message.guild?.channels.cache.has(args[0]) && message.guild?.channels.cache.has(args[1])) {
             let voiceFrom = message.guild?.channels.cache.get(args[0])
@@ -37,6 +38,8 @@ export default class CommandMoveVoice implements ICommand {
             message.reply("I either do not have access to one of those channels, or it could not be found!")
             this.bot.reactNegativeToMessage(message)
         }
+
+        message.channel.stopTyping()
     }
 
     name(): string {
