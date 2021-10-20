@@ -1,5 +1,5 @@
 import * as Discord from 'discord.js'
-import { PermissionLevel, RoleType } from './types';
+import { RoleType } from './types';
 import * as Firestore from '@google-cloud/firestore';
 import { firestore } from 'firebase';
 
@@ -9,13 +9,6 @@ export class Utilities {
         projectId: process.env.FIREBASE_PROJECT_ID,
         keyFilename: 'firebase-auth.json'
     })
-
-    static getUserPermissionLevel(user: Discord.GuildMember, db: Firestore.Firestore): PermissionLevel {
-        if(user.hasPermission("ADMINISTRATOR")) {
-            return PermissionLevel.ADMIN
-        }
-        return PermissionLevel.EVERYONE
-    }
 
     static async setRoleAsType(guild: Discord.Snowflake, type: RoleType, roleID: String){
         var guildConfigRef = Utilities.db.doc(`guilds/${guild}`)
