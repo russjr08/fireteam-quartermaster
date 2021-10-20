@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 import { ICommand } from '../interfaces';
-import { PermissionLevel } from '../types';
+import { RoleType } from '../types';
 import { Bot } from '../bot';
 import * as Discord from 'discord.js';
 import { Utilities } from '../Utilities';
@@ -13,7 +13,7 @@ export default class CommandHelp implements ICommand {
         this.bot = bot
     }
 
-    run(message: Message, args: string[]): void {
+    async run(message: Message, args: string[]): Promise<void> {
 
         const embed = new Discord.MessageEmbed()
                             .setTitle("My List of Commands")
@@ -22,7 +22,7 @@ export default class CommandHelp implements ICommand {
 
         for(let command of this.bot.getCommands()) {
             if(!command.isCommandHidden()) {
-                if(Utilities.getUserPermissionLevel(message.member!, this.bot.getDatabase()) >= command.getRequiredPermissionLevel()) {
+                if(await Utilities.doesUserHaveRoleType(message.guild!, command.getRequiredPermissionLevel(), message.member!)) {
                     embed.addField(command.name(), command.getHelpText(), false)
                 }
             }
@@ -40,8 +40,8 @@ export default class CommandHelp implements ICommand {
         return `<${this.bot.COMMAND_PREFIX}help> Lists all available commands, and their help text.`
     }
 
-    getRequiredPermissionLevel(): PermissionLevel {
-        return PermissionLevel.EVERYONE
+    getRequiredPermissionLevel(): RoleType {
+        return RoleType.EVERYONE
     }
 
     isCommandHidden(): boolean {

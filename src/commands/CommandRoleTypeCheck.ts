@@ -1,7 +1,7 @@
-import { Guild, Message, MessageEmbed } from "discord.js";
+import { Message, MessageEmbed } from "discord.js";
 import { Bot } from "../bot";
 import { ICommand } from "../interfaces";
-import { PermissionLevel, RoleType } from "../types";
+import { RoleType } from "../types";
 import { Utilities } from "../Utilities";
 
 export default class CommandRoleTypeCheck implements ICommand {
@@ -80,8 +80,8 @@ export default class CommandRoleTypeCheck implements ICommand {
         return "Used to check what role a RoleType requires"
     }
 
-    getRequiredPermissionLevel(): PermissionLevel {
-        return PermissionLevel.ADMIN
+    getRequiredPermissionLevel(): RoleType {
+        return RoleType.ADMIN
     }
 
     isCommandHidden(): boolean {

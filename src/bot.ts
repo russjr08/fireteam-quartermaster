@@ -68,9 +68,9 @@ export class Bot {
                 var slicedInput = message.content.split(this.COMMAND_PREFIX)
                 if(slicedInput.length > 1) {
                     var commandName = slicedInput[1].split(" ")[0]
-                    this.commands.forEach((command: ICommand) => {
+                    this.commands.forEach(async (command: ICommand) => {
                         if(command.name() === commandName) {
-                            if(Utilities.getUserPermissionLevel(message.member!, this.db) >= command.getRequiredPermissionLevel()) {
+                            if(await Utilities.doesUserHaveRoleType(message.guild!, command.getRequiredPermissionLevel(), message.member!)) {
                                 var args = slicedInput[1].split(" ").slice(1)
                                 command.run(message, args)
                             } else {

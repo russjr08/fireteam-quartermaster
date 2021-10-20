@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 import { ICommand } from '../interfaces';
-import { PermissionLevel } from '../types';
+import { RoleType } from '../types';
 import { Bot } from '../bot';
 
 export default class CommandMoveVoice implements ICommand {
@@ -47,8 +47,8 @@ export default class CommandMoveVoice implements ICommand {
         return `<${this.bot.COMMAND_PREFIX}move_voice VC_FROM_ID VC_TO_ID> Moves all users from the given voice channel to the other given voice channel.`
     }
 
-    getRequiredPermissionLevel(): PermissionLevel {
-        return PermissionLevel.ADMIN
+    getRequiredPermissionLevel(): RoleType {
+        return RoleType.MODERATOR
     }
 
     isCommandHidden(): boolean {

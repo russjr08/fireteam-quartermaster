@@ -1,7 +1,6 @@
 import { ICommand } from '../interfaces';
-import { PermissionLevel } from '../types';
+import { RoleType } from '../types';
 import { Message } from 'discord.js';
-import * as Discord from 'discord.js';
 import { Bot } from '../bot';
 
 export default class CommandPing implements ICommand {
@@ -23,8 +22,8 @@ export default class CommandPing implements ICommand {
         return `Test command... Nothing to see here!`
     }
 
-    getRequiredPermissionLevel(): PermissionLevel {
-        return PermissionLevel.EVERYONE
+    getRequiredPermissionLevel(): RoleType {
+        return RoleType.EVERYONE
     }
 
     isCommandHidden(): boolean {

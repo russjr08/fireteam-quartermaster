@@ -1,5 +1,5 @@
 import { ICommand } from '../interfaces';
-import { PermissionLevel } from '../types';
+import { RoleType } from '../types';
 import { Message } from 'discord.js';
 import * as Discord from 'discord.js';
 import { Bot } from '../bot';
@@ -97,8 +97,8 @@ export default class CommandRegister implements ICommand {
         return (Math.log10((x ^ (x >> 31)) - (x >> 31)) | 0) + 1;
     }
 
-    getRequiredPermissionLevel(): PermissionLevel {
-        return PermissionLevel.EVERYONE
+    getRequiredPermissionLevel(): RoleType {
+        return RoleType.EVERYONE
     }
 
     isCommandHidden(): boolean {

@@ -1,7 +1,7 @@
 import { DiscordAPIError, Message, MessageEmbed } from "discord.js";
 import { Bot } from "../bot";
 import { ICommand } from "../interfaces";
-import { PermissionLevel, RoleType } from "../types";
+import { RoleType } from "../types";
 import { Utilities } from "../Utilities";
 
 export default class CommandSetRoleType implements ICommand {
@@ -66,8 +66,8 @@ export default class CommandSetRoleType implements ICommand {
         return `Allows you to connect a Discord Role to a Role Type within my system!`
     }
 
-    getRequiredPermissionLevel(): PermissionLevel {
-        return PermissionLevel.ADMIN
+    getRequiredPermissionLevel(): RoleType {
+        return RoleType.ADMIN
     }
 
     isCommandHidden(): boolean {

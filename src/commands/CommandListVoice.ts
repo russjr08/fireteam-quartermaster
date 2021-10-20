@@ -1,5 +1,5 @@
 import { ICommand } from '../interfaces';
-import { PermissionLevel } from '../types';
+import { RoleType } from '../types';
 import { Message } from 'discord.js';
 import * as Discord from 'discord.js'
 import { Bot } from '../bot';
@@ -74,8 +74,8 @@ export default class CommandListVoice implements ICommand {
         return `<${this.bot.COMMAND_PREFIX}list_voice> Creates a read-out of the Bungie Names for all the members in your voice channel.`
     }
 
-    getRequiredPermissionLevel(): PermissionLevel {
-        return PermissionLevel.EVERYONE
+    getRequiredPermissionLevel(): RoleType {
+        return RoleType.EVERYONE
     }
 
     isCommandHidden(): boolean {
