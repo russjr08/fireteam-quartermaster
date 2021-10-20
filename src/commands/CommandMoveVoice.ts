@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+import { Guild, GuildMember, Message } from 'discord.js';
 import { ICommand } from '../interfaces';
 import { RoleType } from '../types';
 import { Bot } from '../bot';
@@ -46,8 +46,8 @@ export default class CommandMoveVoice implements ICommand {
         return "move_voice"
     }
 
-    getHelpText(): string {
-        return `<${this.bot.COMMAND_PREFIX}move_voice VC_FROM_ID VC_TO_ID> Moves all users from the given voice channel to the other given voice channel.`
+    getHelpText(guild: Guild, user: GuildMember): Promise<string> {
+        return Promise.resolve(`<${this.bot.COMMAND_PREFIX}move_voice VC_FROM_ID VC_TO_ID> Moves all users from the given voice channel to the other given voice channel.`)
     }
 
     getRequiredPermissionLevel(): RoleType {

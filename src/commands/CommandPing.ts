@@ -1,6 +1,6 @@
 import { ICommand } from '../interfaces';
 import { RoleType } from '../types';
-import { Message } from 'discord.js';
+import { Guild, GuildMember, Message } from 'discord.js';
 import { Bot } from '../bot';
 
 export default class CommandPing implements ICommand {
@@ -20,8 +20,8 @@ export default class CommandPing implements ICommand {
         return "ping"
     }
 
-    getHelpText(): string {
-        return `Test command... Nothing to see here!`
+    getHelpText(guild: Guild, user: GuildMember): Promise<string> {
+        return Promise.resolve(`Test command... Nothing to see here!`)
     }
 
     getRequiredPermissionLevel(): RoleType {

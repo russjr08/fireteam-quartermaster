@@ -87,6 +87,24 @@ export class Utilities {
 
         return user.roles.highest.comparePositionTo(role) >= 0
     }
+
+    static async getUsersHighestRoleType(guild: Discord.Guild, user: Discord.GuildMember): Promise<RoleType> {
+        if(await this.doesUserHaveRoleType(guild, RoleType.DEVELOPER, user)) {
+            return RoleType.DEVELOPER
+        } else if(await this.doesUserHaveRoleType(guild, RoleType.ADMIN, user)) {
+            return RoleType.ADMIN
+        } else if(await this.doesUserHaveRoleType(guild, RoleType.MODERATOR, user)) {
+            return RoleType.MODERATOR
+        } else if(await this.doesUserHaveRoleType(guild, RoleType.MAX_TRUSTED, user)) {
+            return RoleType.MAX_TRUSTED
+        } else if(await this.doesUserHaveRoleType(guild, RoleType.SOFT_TRUSTED, user)) {
+            return RoleType.SOFT_TRUSTED
+        } else if(await this.doesUserHaveRoleType(guild, RoleType.EVERYONE, user)) {
+            return RoleType.EVERYONE
+        } else {
+            return RoleType.EVERYONE
+        }
+    }
     
 }
 

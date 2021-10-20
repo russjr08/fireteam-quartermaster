@@ -66,8 +66,8 @@ export default class CommandLookup implements ICommand {
         return "lookup"
     }
 
-    getHelpText(): string {
-        return `<${this.bot.COMMAND_PREFIX}lookup @Username> Attempts to lookup a Guardian's Bungie Name, and returns it if found. _Hint, you can lookup multiple Guardians at once!_`
+    getHelpText(guild: Discord.Guild, user: Discord.GuildMember): Promise<string> {
+        return Promise.resolve(`<${this.bot.COMMAND_PREFIX}lookup @Username> Attempts to lookup a Guardian's Bungie Name, and returns it if found. _Hint, you can lookup multiple Guardians at once!_`)
     }
 
     getRequiredPermissionLevel(): RoleType {

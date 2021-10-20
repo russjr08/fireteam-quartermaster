@@ -68,8 +68,8 @@ export default class CommandRegister implements ICommand {
         return "register"
     }
 
-    getHelpText(): string {
-        return `<${this.bot.COMMAND_PREFIX}register Bungie_Name#1234> Registers your Bungie Name with my database, note that Bungie_Name#000 should be your Bungie Name, with the discriminator at the end (the #1234 part).`
+    getHelpText(guild: Discord.Guild, user: Discord.GuildMember): Promise<string> {
+        return Promise.resolve(`<${this.bot.COMMAND_PREFIX}register Bungie_Name#1234> Registers your Bungie Name with my database, note that Bungie_Name#000 should be your Bungie Name, with the discriminator at the end (the #1234 part).`)
     }
 
     private isValidBungieName(name: string): boolean {

@@ -4,7 +4,7 @@ import { RoleType } from './types';
 export interface ICommand {
     run(message: Discord.Message, args: string[]): void
     name(): string
-    getHelpText(): string
+    getHelpText(guild: Discord.Guild, user: Discord.GuildMember): Promise<string>
     getRequiredPermissionLevel(): RoleType
     isCommandHidden(): boolean
 }

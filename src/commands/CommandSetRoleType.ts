@@ -1,4 +1,4 @@
-import { DiscordAPIError, Message, MessageEmbed } from "discord.js";
+import { DiscordAPIError, Guild, GuildMember, Message, MessageEmbed } from "discord.js";
 import { Bot } from "../bot";
 import { ICommand } from "../interfaces";
 import { RoleType } from "../types";
@@ -59,8 +59,8 @@ export default class CommandSetRoleType implements ICommand {
         return "set_role_type"
     }
 
-    getHelpText(): string {
-        return `Allows you to connect a Discord Role to a Role Type within my system!`
+    getHelpText(guild: Guild, user: GuildMember): Promise<string> {
+        return Promise.resolve(`Allows you to connect a Discord Role to a Role Type within my system!`)
     }
 
     getRequiredPermissionLevel(): RoleType {

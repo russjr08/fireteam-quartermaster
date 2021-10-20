@@ -17,15 +17,17 @@ export default class CommandHelp implements ICommand {
 
         message.channel.startTyping()
 
+        const userHighestRole = await Utilities.getRoleFromType(message.guild!, await Utilities.getUsersHighestRoleType(message.guild!, message.member!))
+
         const embed = new Discord.MessageEmbed()
-                            .setTitle("My List of Commands")
+                            .setTitle(`My List of Commands`)
                             .setColor(this.bot.DEFAULT_EMBED_COLOR)
-                            .setDescription("See the following list for commands that you can run, and what they do!")
+                            .setDescription(`See the following list for commands that you can run, and what they do! (Role Type: <@&${userHighestRole}>)`)
 
         for(let command of this.bot.getCommands()) {
             if(!command.isCommandHidden()) {
                 if(await Utilities.doesUserHaveRoleType(message.guild!, command.getRequiredPermissionLevel(), message.member!)) {
-                    embed.addField(command.name(), command.getHelpText(), false)
+                    embed.addField(command.name(), await command.getHelpText(message.guild!, message.member!), false)
                 }
             }
         }
@@ -38,8 +40,9 @@ export default class CommandHelp implements ICommand {
         return "help"
     }
 
-    getHelpText(): string {
-        return `<${this.bot.COMMAND_PREFIX}help> Lists all available commands, and their help text.`
+    async getHelpText(guild: Discord.Guild, user: Discord.GuildMember): Promise<string> {
+        const userHighestRole = await Utilities.getRoleFromType(guild, await Utilities.getUsersHighestRoleType(guild, user))
+        return Promise.resolve(`<${this.bot.COMMAND_PREFIX}help> Lists all available commands, and their help text, that your role (<@&${userHighestRole}>) can access!`)
     }
 
     getRequiredPermissionLevel(): RoleType {

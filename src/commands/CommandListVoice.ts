@@ -72,8 +72,8 @@ export default class CommandListVoice implements ICommand {
         return "list_voice"
     }
 
-    getHelpText(): string {
-        return `<${this.bot.COMMAND_PREFIX}list_voice> Creates a read-out of the Bungie Names for all the members in your voice channel.`
+    getHelpText(guild: Discord.Guild, user: Discord.GuildMember): Promise<string> {
+        return Promise.resolve(`<${this.bot.COMMAND_PREFIX}list_voice> Creates a read-out of the Bungie Names for all the members in your voice channel.`)
     }
 
     getRequiredPermissionLevel(): RoleType {

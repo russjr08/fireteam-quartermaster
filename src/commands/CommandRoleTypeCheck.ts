@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from "discord.js";
+import { Guild, GuildMember, Message, MessageEmbed } from "discord.js";
 import { Bot } from "../bot";
 import { ICommand } from "../interfaces";
 import { RoleType } from "../types";
@@ -76,8 +76,8 @@ export default class CommandRoleTypeCheck implements ICommand {
         return "check_role_type"
     }
 
-    getHelpText(): string {
-        return "Used to check what role a RoleType requires"
+    getHelpText(guild: Guild, user: GuildMember): Promise<string> {
+        return Promise.resolve("Used to check what role a RoleType requires")
     }
 
     getRequiredPermissionLevel(): RoleType {
