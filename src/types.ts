@@ -4,6 +4,10 @@ export enum RoleType {
     MAX_TRUSTED = "MAX_TRUSTED",
     MODERATOR = "MODERATOR",
     ADMIN = "ADMIN",
-    DEVELOPER = "DEVELOPER"
-
+    DEVELOPER = "DEVELOPER",
+    /**
+     * Used if a command needs to perform its own permissions check,
+     *  such as to bootstrap permissions for the rest of the bot!
+     */
+    CUSTOM = "CUSTOM"
 }

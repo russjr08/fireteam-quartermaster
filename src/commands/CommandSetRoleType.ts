@@ -12,11 +12,18 @@ export default class CommandSetRoleType implements ICommand {
         this.bot = bot;
     }
 
-    run(message: Message, args: string[]): void {
+    async run(message: Message, args: string[]): Promise<void> {
         if(args.length < 2) {
             this.bot.reactNegativeToMessage(message)
             message.reply("Not enough arguments provided: I need the type and Role ID that you'd like to set!")
             return
+        }
+
+        if(!await Utilities.doesUserHaveRoleType(message.guild!, RoleType.ADMIN, message.member!) 
+            && !message.member?.hasPermission("ADMINISTRATOR")) {
+                message.reply("Error: You are not authorized to run this command! (**Access Denied**)")
+                this.bot.reactNegativeToMessage(message)
+                return
         }
 
         message.channel.startTyping()
@@ -64,7 +71,7 @@ export default class CommandSetRoleType implements ICommand {
     }
 
     getRequiredPermissionLevel(): RoleType {
-        return RoleType.ADMIN
+        return RoleType.CUSTOM
     }
 
     isCommandHidden(): boolean {
