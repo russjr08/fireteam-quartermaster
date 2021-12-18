@@ -13,6 +13,8 @@ import { Utilities } from './Utilities';
 import CommandSetRoleType from './commands/CommandSetRoleType';
 import CommandRoleTypeCheck from './commands/CommandRoleTypeCheck';
 import CommandInstruct from './commands/CommandInstruct';
+import CommandPurge from './commands/CommandPurge';
+import { RoleType } from './types';
 
 export class Bot {
 
@@ -71,7 +73,8 @@ export class Bot {
                     var commandName = slicedInput[1].split(" ")[0]
                     this.commands.forEach(async (command: ICommand) => {
                         if(command.name() === commandName) {
-                            if(await Utilities.doesUserHaveRoleType(message.guild!, command.getRequiredPermissionLevel(), message.member!)) {
+                            if(await Utilities.doesUserHaveRoleType(message.guild!, command.getRequiredPermissionLevel(), message.member!)
+                             || command.getRequiredPermissionLevel() == RoleType.CUSTOM) {
                                 var args = slicedInput[1].split(" ").slice(1)
                                 command.run(message, args)
                             } else {
@@ -97,6 +100,7 @@ export class Bot {
         this.commands.push(new CommandSetRoleType(this))
         this.commands.push(new CommandRoleTypeCheck(this))
         this.commands.push(new CommandInstruct(this))
+        this.commands.push(new CommandPurge(this))
         this.commands.push(new CommandHelp(this))
     
         this.client.login(process.env['BOT_LOGIN_TOKEN'])

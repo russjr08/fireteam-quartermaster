@@ -67,6 +67,8 @@ export class Utilities {
                 return roleData.ADMIN
             case RoleType.DEVELOPER:
                 return roleData.DEVELOPER
+            case RoleType.CUSTOM:
+                return "CUSTOM"
         }
     }
 
