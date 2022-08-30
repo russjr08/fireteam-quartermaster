@@ -55,7 +55,8 @@ export default class CommandSetRoleType implements ICommand {
             this.bot.reactPositiveToMessage(message)
         } catch (error) {
             this.bot.reactNegativeToMessage(message)
-            message.reply(error)
+            console.log(error)
+            message.reply("This command has failed to run! Check the console for details.")
         }
 
         message.channel.stopTyping()

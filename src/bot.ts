@@ -15,6 +15,8 @@ import CommandRoleTypeCheck from './commands/CommandRoleTypeCheck';
 import CommandInstruct from './commands/CommandInstruct';
 import CommandPurge from './commands/CommandPurge';
 import { RoleType } from './types';
+import { Raid, VaultOfGlass, LastWish, DeepStoneCrypt, VowOfTheDisciple, KingsFall } from './d2/Raid';
+import CommandTest from './commands/CommandTest';
 
 export class Bot {
 
@@ -23,6 +25,8 @@ export class Bot {
     private commands = new Array<ICommand>()
     
     private db: Firestore.Firestore
+
+    private availableRaids = new Array<Raid>()
 
     public COMMAND_PREFIX = "&"
     public DEFAULT_EMBED_COLOR = "#00c0ff"
@@ -36,6 +40,8 @@ export class Bot {
             projectId: process.env.FIREBASE_PROJECT_ID,
             keyFilename: 'firebase-auth.json'
         })
+
+        this.availableRaids.push(new VaultOfGlass(), new LastWish(), new DeepStoneCrypt(), new VowOfTheDisciple(), new KingsFall());
     }
 
     private updateStatus() {
@@ -101,6 +107,7 @@ export class Bot {
         this.commands.push(new CommandRoleTypeCheck(this))
         this.commands.push(new CommandInstruct(this))
         this.commands.push(new CommandPurge(this))
+        this.commands.push(new CommandTest(this))
         this.commands.push(new CommandHelp(this))
     
         this.client.login(process.env['BOT_LOGIN_TOKEN'])
@@ -125,6 +132,10 @@ export class Bot {
 
     public reactWaitingToMessage(message: Discord.Message) {
         message.reactions.removeAll().then(() => message.react("🤔"))
+    }
+
+    public getAvailableRaids(): Array<Raid> {
+        return this.availableRaids
     }
 
 }
