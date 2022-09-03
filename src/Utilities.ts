@@ -2,6 +2,8 @@ import * as Discord from 'discord.js'
 import { RoleType } from './types';
 import * as Firestore from '@google-cloud/firestore';
 import { firestore } from 'firebase';
+import { Raid } from './d2/Raid';
+import { MessageEmbed } from 'discord.js';
 
 export class Utilities {
 
@@ -99,6 +101,46 @@ export class Utilities {
         } else {
             return RoleType.EVERYONE
         }
+    }
+
+    static sendRaidVote(channel: Discord.TextChannel | Discord.NewsChannel | Discord.DMChannel, raids: Array<Raid>, embedColor: string, introText: string) {
+
+        var voteChoiceEmotes = new Array<string>();
+        voteChoiceEmotes.push("1️⃣")
+        voteChoiceEmotes.push("2️⃣")
+        voteChoiceEmotes.push("3️⃣")
+        voteChoiceEmotes.push("4️⃣")
+        voteChoiceEmotes.push("5️⃣")
+        voteChoiceEmotes.push("6️⃣")
+        voteChoiceEmotes.push("7️⃣")
+        voteChoiceEmotes.push("8️⃣")
+        voteChoiceEmotes.push("9️⃣")
+
+        var embed = new MessageEmbed()
+
+        channel.send(introText)
+
+        embed.setTitle("List of Available Raids")
+        embed.setColor(embedColor)
+        embed.setDescription("These are the available raids in Destiny 2!")
+        embed.setFooter("If a Raid is the newest one, then **all** encounters will reward a pinnacle drop; Otherwise it will only reward a pinnacle at the end! For an extra challenge, try out the Master mode if it's available! ")
+
+        raids.forEach(function(raid, index) {
+            var raidDesc = `Recommended Power Level: **${raid.getRecommendedPower()}**\n\n`
+            raidDesc += `Option: ${voteChoiceEmotes[index] != null ? voteChoiceEmotes[index] : "??"}`
+            raidDesc += `\n\nIs Newest: ${raid.isNewest() ? "**Yes**" : "No" }\n\n`
+            raidDesc += `Has Master/Prestige Mode: ${raid.hasAdvancedMode() ? "Yes" : "No" }\n\n`
+
+            embed.addField(raid.getName(), raidDesc, true)
+        })
+
+        channel.send(embed).then((message) => {
+            for(var i = 0; i < raids.length; i++) {
+                if(voteChoiceEmotes.length >= i) {
+                    message.react(voteChoiceEmotes[i])
+                }
+            }
+        })
     }
     
 }

@@ -15,8 +15,8 @@ import CommandRoleTypeCheck from './commands/CommandRoleTypeCheck';
 import CommandInstruct from './commands/CommandInstruct';
 import CommandPurge from './commands/CommandPurge';
 import { RoleType } from './types';
-import { Raid, VaultOfGlass, LastWish, DeepStoneCrypt, VowOfTheDisciple, KingsFall } from './d2/Raid';
-import CommandTest from './commands/CommandTest';
+import { Raid, VaultOfGlass, LastWish, GardenOfSalvation, DeepStoneCrypt, VowOfTheDisciple, KingsFall } from './d2/Raid';
+import CommandRaidVote from './commands/CommandRaidVote';
 
 export class Bot {
 
@@ -41,7 +41,7 @@ export class Bot {
             keyFilename: 'firebase-auth.json'
         })
 
-        this.availableRaids.push(new VaultOfGlass(), new LastWish(), new DeepStoneCrypt(), new VowOfTheDisciple(), new KingsFall());
+        this.availableRaids.push(new VaultOfGlass(), new LastWish(), new GardenOfSalvation(), new DeepStoneCrypt(), new VowOfTheDisciple(), new KingsFall());
     }
 
     private updateStatus() {
@@ -107,7 +107,7 @@ export class Bot {
         this.commands.push(new CommandRoleTypeCheck(this))
         this.commands.push(new CommandInstruct(this))
         this.commands.push(new CommandPurge(this))
-        this.commands.push(new CommandTest(this))
+        this.commands.push(new CommandRaidVote(this))
         this.commands.push(new CommandHelp(this))
     
         this.client.login(process.env['BOT_LOGIN_TOKEN'])
