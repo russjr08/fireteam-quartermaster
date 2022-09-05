@@ -142,6 +142,27 @@ export class Utilities {
             }
         })
     }
+
+    static async getRemoteConfigValue(name: string, guild: Discord.Guild): Promise<string | undefined> {
+        var guildConfigRef = Utilities.db.doc(`guilds/${guild.id}`).collection('config').doc("options")
+
+        if(guildConfigRef == null || guildConfigRef == undefined) return Promise.resolve(undefined)
+
+        var ref = await guildConfigRef.get()
+        var data = ref.data()
+        if(data != undefined) {
+            return Promise.resolve(data[name])
+        }
+    }
+
+    static setRemoteConfigValue(name: string, value: string, guild: Discord.Guild) {
+        var guildConfigRef = Utilities.db.doc(`guilds/${guild.id}`).collection('config').doc("options")
+
+        var config: ConfigOption = {}
+        config[name] = value
+
+        guildConfigRef.set(config, { merge: true })
+    }
     
 }
 
@@ -153,3 +174,7 @@ interface RoleTypeStructure {
     ADMIN: String
     DEVELOPER: String
 }
+
+interface ConfigOption {
+    [key: string]: string | number;
+  }

@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv'
 import * as Discord from 'discord.js'
 import * as Firestore from '@google-cloud/firestore'
+import * as schedule from 'node-schedule'
 
 import { ICommand } from './interfaces';
 import CommandPing  from './commands/CommandPing'
@@ -17,6 +18,7 @@ import CommandPurge from './commands/CommandPurge';
 import { RoleType } from './types';
 import { Raid, VaultOfGlass, LastWish, GardenOfSalvation, DeepStoneCrypt, VowOfTheDisciple, KingsFall } from './d2/Raid';
 import CommandRaidVote from './commands/CommandRaidVote';
+import CommandConfig from './commands/CommandConfig';
 
 export class Bot {
 
@@ -108,9 +110,12 @@ export class Bot {
         this.commands.push(new CommandInstruct(this))
         this.commands.push(new CommandPurge(this))
         this.commands.push(new CommandRaidVote(this))
+        this.commands.push(new CommandConfig(this))
         this.commands.push(new CommandHelp(this))
     
         this.client.login(process.env['BOT_LOGIN_TOKEN'])
+
+        this.setupRaidNotification()
     }
 
 
@@ -136,6 +141,37 @@ export class Bot {
 
     public getAvailableRaids(): Array<Raid> {
         return this.availableRaids
+    }
+
+    private setupRaidNotification() {
+        const rule = new schedule.RecurrenceRule()
+        rule.dayOfWeek = 2
+        rule.hour = 13
+        rule.minute = 5
+        rule.tz = "America/New_York"
+
+        const job = schedule.scheduleJob(rule, () => {
+            console.log("Posting weekly raid poll... now!")
+            bot.client.guilds.cache.forEach(async (guild) => {
+                console.log(`Processing poll for Guild: ${guild.name}`)
+                const channelId = await Utilities.getRemoteConfigValue("raid-poll-channel", guild)
+                if(channelId == undefined) {
+                    console.log(`The guild ${guild.name} does not have a raid-poll-channel config option set, skipping!`)
+                    return
+                }
+
+                const introText = "Weekly Reset has occurred in Destiny! That means it's time to vote on what raid we should attempt for the week, make your choice by reacting to this message!"
+                const channel = guild.channels.cache.get(channelId)
+                if(channel instanceof Discord.TextChannel || channel instanceof Discord.NewsChannel) {
+                    Utilities.sendRaidVote(channel, bot.availableRaids, bot.DEFAULT_EMBED_COLOR, introText)
+                    console.log(`Raid vote has been posted for ${guild.name}`)
+                } else {
+                    console.log("This guild's set raid-poll-channel is either not resolvable, or is not a proper text channel!")
+                }
+            })
+        })
+
+        console.log("Weekly Raid poll job has been scheduled.")
     }
 
 }
